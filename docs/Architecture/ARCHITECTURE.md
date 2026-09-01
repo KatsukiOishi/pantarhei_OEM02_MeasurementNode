@@ -1,0 +1,143 @@
+# システムアーキテクチャ
+
+## 1. 適用範囲
+
+小型 DC 風力発電機から電力を回収し、温湿度と蓄電電圧を BLE Advertising で送信する初号評価基板の構成を定義する。PC 側ソフトウェアは顧客範囲であり、本書では無線で引き渡すデータまでを境界とする。
+
+主要 IC とモジュールは本書の品種を初号機へ採用する。入力保護定格は、未測定の発電機最大開放電圧と過渡電圧が暫定設計条件を超えないことを実測で確認してから確定する。
+
+## 2. システムブロック図
+
+```mermaid
+flowchart LR
+    GEN[DC 風力発電機] --> JIN[発電入力端子]
+    JIN --> RP[100 V P-MOSFET<br/>逆接保護]
+    RP --> SURGE[SMBJ40A<br/>粗サージ保護]
+    SURGE --> CLAMP[TLVH431B + BCP53-16<br/>4.45 V 能動シャント]
+    CLAMP --> IDEAL[LM66100<br/>逆流防止]
+    IDEAL --> IMON[入力電流測定<br/>ジャンパ / テスト点]
+    IMON --> PMIC[BQ25570<br/>Boost / MPPT / 蓄電管理]
+    PMIC --> CAP[PHV-5R4V474-R<br/>5.4 V 0.47 F]
+    CAP --> BUCK[BQ25570 Buck<br/>3.3 V]
+    PMIC -- VBAT_OK --> BUCK
+
+    BUCK --> BLE[MDBT50Q-U1MV2<br/>nRF52840]
+    BUCK --> SENSOR[SHTC3<br/>温湿度]
+    CAP --> ADC[高抵抗分圧 + SAADC]
+    ADC --> BLE
+    SENSOR -- I2C --> BLE
+    BLE --> UART[3.3 V UART 拡張]
+    SWD[SWD 端子] --> BLE
+    BLE --> UFL[u.FL]
+    UFL --> ANT[ANTX100ETHAB24553<br/>2.4 GHz アンテナ]
+    ANT -. BLE Advertising .-> CUSTOMER[顧客側受信システム]
+```
+
+電力線は左から右、制御・計測線は分岐で示す。`VBAT_OK` の上昇しきい値で 3.3 V を有効化し、下降しきい値で負荷を遮断する。
+
+## 3. 主要部品選定
+
+| 機能                    | 採用品                             | 選定理由                                                                               | 状態                 |
+| ----------------------- | ---------------------------------- | -------------------------------------------------------------------------------------- | -------------------- |
+| エナジーハーベスト PMIC | Texas Instruments `BQ25570RGR`     | 600 mV コールドスタート、起動後 100 mV 級入力、MPPT、スーパーキャパシタ保護、Buck 内蔵 | 採用                 |
+| 蓄電素子                | Eaton `PHV-5R4V474-R`              | 5.4 V、0.47 F、ESR 約 0.4 ohm。4.7 V 級充電に余裕がある                                | 採用                 |
+| BLE / メイン MCU        | Raytac `MDBT50Q-U1MV2`             | nRF52840、Coded PHY、u.FL、1 MB Flash / 256 KB RAM、Telec を含むモジュール認証         | 採用                 |
+| 外部アンテナ            | Yageo `ANTX100ETHAB24553`          | Raytac が MDBT50Q-U 用として列挙する 2 dBi 以下の Telec 対応アンテナ                   | 採用                 |
+| 温湿度センサ            | Sensirion `SHTC3`                  | 1.62-3.6 V、I2C、低電力モード 1 測定 1 uJ 未満                                         | 採用                 |
+| 精密シャント基準        | Texas Instruments `TLVH431B`       | 1.24 V 動作、0.5%、最大 70 mA 級、4.45 V の能動クランプ制御に使用                      | 採用                 |
+| シャント素子            | Nexperia `BCP53-16` + 33 ohm / 1 W | 80 V PNP と電力抵抗で 0.5 W 暫定入力の余剰を吸収                                       | 採用、実負荷試験必須 |
+| 逆接保護 MOSFET         | Diodes Inc. `ZXMP10A13FTA`         | 100 V P-channel。低電圧時のダイオード順方向損失を避ける                                | 採用                 |
+| 逆流防止                | Texas Instruments `LM66100DCKR`    | 1.5-5.5 V の理想ダイオード。4.45 V クランプ後で蓄電側から発電機への逆流を遮断          | 採用                 |
+| サージ TVS              | `SMBJ40A`                          | 40 V スタンドオフ。能動クランプより前で粗い過渡を抑制                                  | 採用、波形確認必須   |
+| Boost インダクタ        | Coilcraft `LPS4018-223MRB`、22 uH  | BQ25570 EVM 推奨系列、飽和電流 300 mA 以上                                             | 採用                 |
+| Buck インダクタ         | Wurth `74479889310`、10 uH         | BQ25570 EVM 推奨部品                                                                   | 採用                 |
+| 書込み・デバッグ        | Nordic `nRF52840 DK`               | P19 / P20 Debug out から外部 nRF52840 を SWD 書込み可能                                | 開発治具として採用   |
+
+根拠資料:
+
+- [BQ25570 製品情報・データシート](https://www.ti.com/product/BQ25570)
+- [BQ25570EVM-206 ユーザーガイド](https://www.ti.com/lit/ug/sluuaa7a/sluuaa7a.pdf)
+- [Eaton PHV-5R4V474-R](https://www.eaton.com/gb/en-gb/skuPage.PHV-5R4V474-R.html)
+- [Raytac MDBT50Q-U1MV2 製品仕様](https://www.raytac.com/download/index.php?index_id=44)
+- [Sensirion SHTC3 データシート](https://sensirion.com/media/documents/643F9C8E/63A5A436/Datasheet_SHTC3.pdf)
+- [TI TLVH431B](https://www.ti.com/product/TLVH431)
+- [TI LM66100](https://www.ti.com/product/LM66100)
+- [Nexperia BCP53-16](https://www.nexperia.com/product/BCP53-16)
+- [Diodes Inc. ZXMP10A13F](https://www.diodes.com/part/view/ZXMP10A13F)
+- [Coilcraft LPS4018 series](https://www.coilcraft.com/en-us/products/power/shielded-inductors/ferrite-drum/lps/lps4018/)
+- [Nordic nRF52840 DK の外部デバッグ手順](https://docs.nordicsemi.com/r/bundle/ug_nrf52840_dk/page/ug/dk/hw_debug_out_segger53.html)
+
+## 4. 電源設計値
+
+### 4.1 設計エンベロープ
+
+| 項目                       |                初号機の設計値 |
+| -------------------------- | ----------------------------: |
+| 通常回収開始入力           |                      約 1.8 V |
+| 発電機開放電圧             |               40 V 以下、暫定 |
+| 最大発電電力               |              0.5 W 以下、暫定 |
+| BQ25570 入力クランプ       | 4.45 V 目標、5.1 V 未満を保証 |
+| スーパーキャパシタ充電停止 |                     約 4.72 V |
+| ロジック起動               |                     約 4.09 V |
+| ロジック停止               |                     約 3.58 V |
+| ロジック電源               |                     約 3.30 V |
+
+客先測定では 1 kohm 負荷で最大 18.13 V、328.7 mW、10 ohm 負荷で最大 61.2 mA が記録されている。18.13 V は開放電圧ではないため、40 V / 0.5 W は安全側の暫定条件であり要求値ではない。
+
+### 4.2 BQ25570 設定抵抗
+
+`VBIAS = 1.21 V`、各分圧抵抗合計をおおむね 13 Mohm とし、初号機では以下を実装する。高抵抗ノードはフラックス残渣の影響を受けるため、洗浄と実測を必須とする。
+
+| 設定           | 抵抗値                               |  計算結果 |
+| -------------- | ------------------------------------ | --------: |
+| `VBAT_OV`      | `ROV1=4.99 Mohm`, `ROV2=8.00 Mohm`   | 約 4.73 V |
+| `VBAT_OK` 下降 | `ROK1=3.83 Mohm`, `ROK2=7.50 Mohm`   | 約 3.58 V |
+| `VBAT_OK` 上昇 | 上記 + `ROK3=1.62 Mohm`              | 約 4.09 V |
+| `VOUT`         | `ROUT1=4.75 Mohm`, `ROUT2=8.20 Mohm` | 約 3.30 V |
+
+抵抗は 0.1% を優先する。`VBAT_OK` を `VOUT_EN` へ接続し、蓄電不足時にロジックをハードウェアで切り離す。
+
+### 4.3 MPPT
+
+DC モーターを内部抵抗を持つ電圧源とみなした初期値として `VOC` の 50% を採用する。基板上の 3 ピン設定で 50%、80%、外付け抵抗設定を選べるようにする。50% は確定した最大電力点ではなく、追加 I-V 測定後に更新する調整初期値である。
+
+### 4.4 入力保護
+
+1. 100 V P-MOSFETで正極側の逆接を保護する。ゲートには 8.2-10 V の VGS 保護を入れる。
+2. `SMBJ40A` は 40 V を超える粗い過渡用とし、BQ25570 の 5 V 保護には使わない。
+3. `TLVH431B`、`BCP53-16`、33 ohm / 1 W で約 4.45 V の能動シャントを構成する。
+4. クランプ後に `LM66100` を置き、スーパーキャパシタから発電機側への逆流を止める。
+5. BQ25570 直前に 4.7 ohm と 4.7 uF を置き、配線インダクタンスによるオーバーシュートを抑える。
+6. 発電入力、クランプ後、`VIN_DC`、`VBAT`、`VOUT` にテストポイントを置く。
+
+能動シャントは 0-40 V の電圧掃引、0-0.5 W の電力掃引、開放・短絡・極性反転、立上り過渡で検証する。全条件で `VIN_DC < 5.1 V`、部品接合温度と抵抗表面温度が定格内であることを確認する。
+
+## 5. ロジック回路
+
+- MDBT50Q-U1MV2 は 3.3 V を `VDD` 系へ供給し、Raytac 仕様書 8.3 の 3.6 V 未満向け構成を踏襲する。
+- 32 MHz 水晶と RF 用部品はモジュール内蔵とし、外付けしない。
+- 32.768 kHz は初号機で実装・DNPを選べるランドを用意する。未実装時は内部 RC を使用する。
+- SHTC3 は 3.3 V、I2C、100 nF デカップリングとし、電源・発熱部から離して基板端へ置く。
+- キャパシタ電圧は 4.7 Mohm / 4.7 Mohm と 100 nF の分圧を SAADC へ入れる。入力リークと実装抵抗を含めて校正する。
+- UART は GND、3V3_EXT、TX、RX、WAKE、STATUS の 6 ピン。TX/RX に 100 ohm 直列抵抗を置く。
+- SWDIO、SWDCLK、RESET、GND、VTref を 10 ピン Cortex Debug または Tag-Connect 互換ランドへ出す。
+- 通常動作 LED は搭載しても DNP を標準とし、点灯電流を常時消費しない。
+
+## 6. 基板配置条件
+
+- u.FL とアンテナ同軸はスイッチングノード、発電機配線、スーパーキャパシタから離す。
+- Raytac 指定の RF keep-out とモジュール下面パッド条件を守る。
+- SHTC3 は BQ25570、インダクタ、シャント抵抗、BLE モジュールから熱的に離し、必要に応じて周囲スリットを設ける。
+- `LBOOST`、`LBUCK`、入力・出力コンデンサの高 di/dt ループを最短にする。
+- 高抵抗分圧ノードはスイッチングノードから離し、ガードと洗浄性を考慮する。
+
+## 7. 未確定だが選定を覆さない確認事項
+
+- 発電機の最大開放電圧、過渡ピーク、極性反転有無
+- 回転数または風速ごとの I-V カーブと最大電力点
+- 40 V / 0.5 W 暫定エンベロープの妥当性
+- アンテナの実装位置、同軸長、筐体条件
+- Coded PHY 使用時にも Raytac の日本向けモジュール認証条件を維持できるかのメーカー確認
+- 結露、防水、正式動作温度、通信距離の検収条件
+
+上記が暫定条件を超える場合、入力保護段だけを再選定する。BQ25570、蓄電素子、BLE モジュール、SHTC3 の選定は維持できる構成とする。

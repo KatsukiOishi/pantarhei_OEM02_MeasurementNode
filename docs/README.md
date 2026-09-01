@@ -4,6 +4,9 @@
 
 ## ファイル
 
+- [Architecture/ARCHITECTURE.md](Architecture/ARCHITECTURE.md): システムブロック図、主要部品、電源・回路設計値
+- [Setup/NCS_SETUP.md](Setup/NCS_SETUP.md): MDBT50Q-U1MV2 / nRF52840 の開発環境と書込み手順
+- [Firmware/FIRMWARE_PLAN.md](Firmware/FIRMWARE_PLAN.md): 状態遷移、Advertising 仕様、低消費電力実装方針
 - [environment.md](environment.md): 開発環境、推奨ツール、初期セットアップ
 - [design-handoff-summary.md](design-handoff-summary.md): 添付設計引継ぎの要約と設計前提
 - [roadmap.md](roadmap.md): 次に進める作業、ブロッカー、検収候補

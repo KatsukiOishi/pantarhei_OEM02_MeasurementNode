@@ -18,21 +18,22 @@
 
 ## 回路・基板
 
-- KiCad 8 以降
+- KiCad 10.0.6
+- [KiCad 10.0.6 公式リリース](https://www.kicad.org/blog/2026/08/KiCad-10.0.6-Release/)
 - 3D モデル、製造データ、BOM は `hardware/` 配下に置く
 - KiCad の自動バックアップ、プロジェクトローカルキャッシュ、生成済み製造データは `.gitignore` の対象
 
-## nRF52840 ファームウェア候補
+## nRF52840 ファームウェア
 
-第一候補は nRF Connect SDK / Zephyr です。
+MDBT50Q-U1MV2 の標準環境は nRF Connect SDK v3.4.0 / Zephyr とします。導入状況、再構築、ビルド、SWD 書込みの詳細は [MDBT50Q-U1MV2 開発環境構築](Setup/NCS_SETUP.md) を参照してください。
 
 必要ツール:
 
-- nRF Connect for Desktop
-- nRF Connect SDK
-- nRF Command Line Tools
+- nRF Connect for VS Code
+- nRF Connect SDK v3.4.0 と対応 toolchain
+- nRF Util の `device` / `sdk-manager`
 - SEGGER J-Link
-- VS Code nRF Connect 拡張
+- nRF52840 DK
 
 想定構成:
 
@@ -48,7 +49,7 @@ west build -b <board_name> firmware/sensor_node
 west flash
 ```
 
-実際のボード名、SDK バージョン、ビルドコマンドはプロジェクト作成時にこのファイルへ追記します。
+カスタム board 名は `pantarhei_oem02/nrf52840` とします。board 定義追加前は `nrf52840dk/nrf52840` でロジックを先行開発します。
 
 ## PC 側との受け渡し
 
