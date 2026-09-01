@@ -1,0 +1,101 @@
+# OS / editor
+.DS_Store
+Thumbs.db
+Desktop.ini
+*.swp
+*.swo
+*~
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+.idea/
+
+# Logs / local env
+*.log
+*.tmp
+*.temp
+.env
+.env.*
+!.env.example
+
+# Python tools
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.venv/
+venv/
+env/
+
+# Node tools
+node_modules/
+dist/
+coverage/
+
+# C / C++ / embedded build outputs
+build/
+out/
+cmake-build-*/
+CMakeFiles/
+CMakeCache.txt
+compile_commands.json
+*.elf
+*.hex
+*.bin
+*.uf2
+*.map
+*.lst
+*.o
+*.obj
+*.a
+*.lib
+*.d
+
+# Zephyr / nRF Connect SDK
+zephyr/
+.west/
+modules/
+twister-out/
+*.config
+*.config.old
+merged.hex
+zephyr.dts
+zephyr.map
+zephyr.stat
+
+# PlatformIO
+.pio/
+.pioenvs/
+.piolibdeps/
+
+# Nordic / flashing tools
+*.jlink
+JLinkLog.txt
+JLinkSettings.ini
+
+# KiCad generated and backup files
+*-backups/
+*.bak
+*.kicad_sch-bak
+*.kicad_pcb-bak
+*.kicad_prl
+*.kicad_prl.*
+*.kicad_pro-bak
+*.lck
+fp-info-cache
+
+# Fabrication / generated hardware outputs
+hardware/fabrication/
+hardware/gerbers/
+hardware/plots/
+hardware/assembly/
+hardware/**/*.zip
+
+# Measurement raw dumps can be large; keep curated CSV/MD reports under test/.
+*.sal
+*.wfm
+*.trc
+*.logicdata
