@@ -8,10 +8,12 @@
 
 - 発電源: 小型 DC 風力発電機
 - 電源方式: エナジーハーベスト IC で回収し、スーパーキャパシタへ蓄電
-- 暫定電源 IC: Texas Instruments BQ25570
-- 暫定蓄電素子: Eaton PHV-5R4V474-R、5.4V、0.47F
-- 暫定 BLE モジュール: Raytac MDBT50Q-U1MV2、nRF52840 搭載
-- 暫定温湿度センサ: Sensirion SHTC3
+- 電源 IC: Texas Instruments BQ25570
+- 蓄電素子: Eaton PHV-5R4V474-R、5.4V、0.47F
+- BLE モジュール: Raytac MDBT50Q-U1MV2、nRF52840 搭載
+- 外部アンテナ: Yageo ANTX100ETHAB24553
+- 温湿度センサ: Sensirion SHTC3
+- ファームウェア: nRF Connect SDK v3.4.0 / Zephyr
 - 通信方式: BLE Advertising を基本とし、距離評価では Coded PHY も検討
 - 担当範囲: 回路・基板設計、センサノード側ファームウェア
 - 顧客範囲: PC 側ソフトウェア、ログ取得・解析ツール
@@ -39,14 +41,17 @@
 ## はじめに読むもの
 
 1. [環境構築](docs/environment.md)
-2. [設計引継ぎ要約](docs/design-handoff-summary.md)
-3. [作業ロードマップ](docs/roadmap.md)
-4. [ドキュメント索引](docs/README.md)
+2. [システムアーキテクチャ](docs/Architecture/ARCHITECTURE.md)
+3. [BLE 開発環境構築](docs/Setup/NCS_SETUP.md)
+4. [ファームウェア実装方針](docs/Firmware/FIRMWARE_PLAN.md)
+5. [設計引継ぎ要約](docs/design-handoff-summary.md)
+6. [作業ロードマップ](docs/roadmap.md)
+7. [ドキュメント索引](docs/README.md)
 
 ## 開発メモ
 
 - 添付・外部の設計資料は、ユーザーの明示依頼とは分けて参考資料として扱います。
-- ファームウェア構成は未確定です。現時点では nRF Connect SDK / Zephyr を第一候補、必要に応じて PlatformIO 等を比較します。
+- ファームウェアは nRF Connect SDK v3.4.0 / Zephyr を採用します。
 - PC 側ソフトウェアは顧客範囲です。このリポジトリでは、BLE Advertising ペイロードや UART/受信データ形式などの受け渡し仕様までを整理します。
 - 回路確定前に、発電機の開放電圧・過渡電圧・I-V 特性を追加測定してください。
 - BQ25570 の入力許容値を超える可能性があるため、発電機を直接接続せず、前段の低損失保護・過電圧制限回路を検討します。
