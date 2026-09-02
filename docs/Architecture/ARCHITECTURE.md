@@ -8,32 +8,9 @@
 
 ## 2. システムブロック図
 
-```mermaid
-flowchart LR
-    GEN[DC 風力発電機] --> JIN[発電入力端子]
-    JIN --> RP[100 V P-MOSFET<br/>逆接保護]
-    RP --> SURGE[SMBJ40A<br/>粗サージ保護]
-    SURGE --> CLAMP[TLVH431B + BCP53-16<br/>4.45 V 能動シャント]
-    CLAMP --> IDEAL[LM66100<br/>逆流防止]
-    IDEAL --> IMON[入力電流測定<br/>ジャンパ / テスト点]
-    IMON --> PMIC[BQ25570<br/>Boost / MPPT / 蓄電管理]
-    PMIC --> CAP[PHV-5R4V474-R<br/>5.4 V 0.47 F]
-    CAP --> BUCK[BQ25570 Buck<br/>3.3 V]
-    PMIC -- VBAT_OK --> BUCK
+[システムブロック図（draw.io）](system-block-diagram.drawio)
 
-    BUCK --> BLE[MDBT50Q-U1MV2<br/>nRF52840]
-    BUCK --> SENSOR[SHTC3<br/>温湿度]
-    CAP --> ADC[高抵抗分圧 + SAADC]
-    ADC --> BLE
-    SENSOR -- I2C --> BLE
-    BLE --> UART[3.3 V UART 拡張]
-    SWD[SWD 端子] --> BLE
-    BLE --> UFL[u.FL]
-    UFL --> ANT[ANTX100ETHAB24553<br/>2.4 GHz アンテナ]
-    ANT -. BLE Advertising .-> CUSTOMER[顧客側受信システム]
-```
-
-電力線は左から右、制御・計測線は分岐で示す。`VBAT_OK` の上昇しきい値で 3.3 V を有効化し、下降しきい値で負荷を遮断する。
+draw.io ファイルを図の正本とする。実線は電力、破線は制御・計測・通信を示す。`VBAT_OK` の上昇しきい値で 3.3 V を有効化し、下降しきい値で負荷を遮断する。
 
 ## 3. 主要部品選定
 
