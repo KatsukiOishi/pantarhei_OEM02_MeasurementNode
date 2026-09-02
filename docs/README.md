@@ -6,8 +6,10 @@
 
 - [Architecture/ARCHITECTURE.md](Architecture/ARCHITECTURE.md): システムブロック図、主要部品、電源・回路設計値
 - [Architecture/BQ25570_ASSESSMENT.md](Architecture/BQ25570_ASSESSMENT.md): BQ25570 の適合性、発電機との整合、採用条件
+- [Architecture/POWER_BUDGET_ASSESSMENT.md](Architecture/POWER_BUDGET_ASSESSMENT.md): 計測・通信のピーク、平均電力、余剰、無風時稼働時間
 - [Setup/NCS_SETUP.md](Setup/NCS_SETUP.md): MDBT50Q-U1MV2 / nRF52840 の開発環境と書込み手順
 - [Firmware/FIRMWARE_PLAN.md](Firmware/FIRMWARE_PLAN.md): 状態遷移、Advertising 仕様、低消費電力実装方針
+- [Codex/対話記録.md](Codex/対話記録.md): 主要な決定、保留事項、次の確認
 - [environment.md](environment.md): 開発環境、推奨ツール、初期セットアップ
 - [design-handoff-summary.md](design-handoff-summary.md): 添付設計引継ぎの要約と設計前提
 - [roadmap.md](roadmap.md): 次に進める作業、ブロッカー、検収候補

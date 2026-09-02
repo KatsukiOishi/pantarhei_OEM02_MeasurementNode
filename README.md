@@ -21,6 +21,7 @@
 ## 重要な未確定事項
 
 - 発電機の最大開放電圧、最大過渡電圧、I-V 特性
+- 設置環境の風速分布、発電時間率、要求無風継続時間
 - 要求風速範囲での BQ25570 案と高耐圧 Buck 案の回収エネルギー比較
 - `U（原データ）` の定義と単位
 - 暫定 40V / 0.5W を保護回路の設計上限として採用してよいか
@@ -44,11 +45,12 @@
 1. [環境構築](docs/environment.md)
 2. [システムアーキテクチャ](docs/Architecture/ARCHITECTURE.md)
 3. [BQ25570 採用妥当性評価](docs/Architecture/BQ25570_ASSESSMENT.md)
-4. [BLE 開発環境構築](docs/Setup/NCS_SETUP.md)
-5. [ファームウェア実装方針](docs/Firmware/FIRMWARE_PLAN.md)
-6. [設計引継ぎ要約](docs/design-handoff-summary.md)
-7. [作業ロードマップ](docs/roadmap.md)
-8. [ドキュメント索引](docs/README.md)
+4. [計測・通信レイヤ 電力収支評価](docs/Architecture/POWER_BUDGET_ASSESSMENT.md)
+5. [BLE 開発環境構築](docs/Setup/NCS_SETUP.md)
+6. [ファームウェア実装方針](docs/Firmware/FIRMWARE_PLAN.md)
+7. [設計引継ぎ要約](docs/design-handoff-summary.md)
+8. [作業ロードマップ](docs/roadmap.md)
+9. [ドキュメント索引](docs/README.md)
 
 ## 開発メモ
 
