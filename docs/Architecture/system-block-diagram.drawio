@@ -31,16 +31,16 @@
                 <mxCell id="10" value="&lt;b&gt;SMBJ40A&lt;/b&gt;&lt;br&gt;粗サージ保護" style="rounded=1;whiteSpace=wrap;html=1;arcSize=6;fillColor=#fef3c7;strokeColor=#b45309;strokeWidth=2;fontColor=#78350f;fontSize=13;" parent="1" vertex="1">
                     <mxGeometry x="540" y="200" width="140" height="80" as="geometry"/>
                 </mxCell>
-                <mxCell id="11" value="&lt;b&gt;TLVH431B + BCP53-16&lt;/b&gt;&lt;br&gt;33 ohm / 1 W&lt;br&gt;4.45 V 能動シャント" style="rounded=1;whiteSpace=wrap;html=1;arcSize=6;fillColor=#fee2e2;strokeColor=#b91c1c;strokeWidth=2;fontColor=#7f1d1d;fontSize=12;" parent="1" vertex="1">
+                <mxCell id="11" value="&lt;b&gt;TLVH431B + BCP53-16&lt;/b&gt;&lt;br&gt;4.45 V 能動シャント&lt;br&gt;BQ25570 案の候補" style="rounded=1;whiteSpace=wrap;html=1;arcSize=6;fillColor=#fee2e2;strokeColor=#b91c1c;strokeWidth=2;fontColor=#7f1d1d;fontSize=12;" parent="1" vertex="1">
                     <mxGeometry x="700" y="190" width="190" height="100" as="geometry"/>
                 </mxCell>
-                <mxCell id="12" value="&lt;b&gt;LM66100&lt;/b&gt;&lt;br&gt;理想ダイオード&lt;br&gt;逆流防止" style="rounded=1;whiteSpace=wrap;html=1;arcSize=6;fillColor=#fef3c7;strokeColor=#b45309;strokeWidth=2;fontColor=#78350f;fontSize=12;" parent="1" vertex="1">
+                <mxCell id="12" value="&lt;b&gt;LM66100&lt;/b&gt;&lt;br&gt;逆流防止候補&lt;br&gt;低電圧始動を要評価" style="rounded=1;whiteSpace=wrap;html=1;arcSize=6;fillColor=#fef3c7;strokeColor=#b45309;strokeWidth=2;fontColor=#78350f;fontSize=12;" parent="1" vertex="1">
                     <mxGeometry x="910" y="190" width="140" height="100" as="geometry"/>
                 </mxCell>
                 <mxCell id="13" value="&lt;b&gt;入力電流測定&lt;/b&gt;&lt;br&gt;ジャンパ / テスト点" style="rounded=1;whiteSpace=wrap;html=1;arcSize=6;fillColor=#f1f5f9;strokeColor=#475569;strokeWidth=2;fontColor=#1e293b;fontSize=12;" parent="1" vertex="1">
                     <mxGeometry x="1070" y="200" width="165" height="80" as="geometry"/>
                 </mxCell>
-                <mxCell id="14" value="&lt;b&gt;BQ25570&lt;/b&gt;&lt;br&gt;Boost / MPPT&lt;br&gt;蓄電管理" style="rounded=1;whiteSpace=wrap;html=1;arcSize=6;fillColor=#dbeafe;strokeColor=#1d4ed8;strokeWidth=2;fontColor=#1e3a8a;fontSize=13;" parent="1" vertex="1">
+                <mxCell id="14" value="&lt;b&gt;BQ25570（条件付き）&lt;/b&gt;&lt;br&gt;Boost / MPPT&lt;br&gt;蓄電管理" style="rounded=1;whiteSpace=wrap;html=1;arcSize=6;fillColor=#dbeafe;strokeColor=#1d4ed8;strokeWidth=2;fontColor=#1e3a8a;fontSize=13;" parent="1" vertex="1">
                     <mxGeometry x="1255" y="190" width="175" height="100" as="geometry"/>
                 </mxCell>
                 <mxCell id="15" value="&lt;b&gt;PHV-5R4V474-R&lt;/b&gt;&lt;br&gt;スーパーキャパシタ&lt;br&gt;5.4 V / 0.47 F" style="rounded=1;whiteSpace=wrap;html=1;arcSize=6;fillColor=#cffafe;strokeColor=#0e7490;strokeWidth=2;fontColor=#164e63;fontSize=13;" parent="1" vertex="1">
