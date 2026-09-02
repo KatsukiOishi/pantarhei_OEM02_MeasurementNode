@@ -5,6 +5,7 @@
 ## ファイル
 
 - [Architecture/ARCHITECTURE.md](Architecture/ARCHITECTURE.md): システムブロック図、主要部品、電源・回路設計値
+- [Architecture/BQ25570_ASSESSMENT.md](Architecture/BQ25570_ASSESSMENT.md): BQ25570 の適合性、発電機との整合、採用条件
 - [Setup/NCS_SETUP.md](Setup/NCS_SETUP.md): MDBT50Q-U1MV2 / nRF52840 の開発環境と書込み手順
 - [Firmware/FIRMWARE_PLAN.md](Firmware/FIRMWARE_PLAN.md): 状態遷移、Advertising 仕様、低消費電力実装方針
 - [environment.md](environment.md): 開発環境、推奨ツール、初期セットアップ
