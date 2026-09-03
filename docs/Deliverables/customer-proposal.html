@@ -415,7 +415,7 @@
       <div class="doc-meta">
         提出先：パンタレイ様<br>
         提出元：株式会社越後鐵工所<br>
-        2026年9月3日　Rev. 1.1
+        2026年9月3日　Rev. 1.2
       </div>
     </header>
 
@@ -441,12 +441,12 @@
         <span class="label">10分周期の平均消費<br>受入上限0.15 mW</span>
       </div>
       <div class="metric">
-        <span class="value">2.016 mW</span>
-        <span class="label">顧客データの<br>電力収支最低比較点</span>
+        <span class="value">1.5 V以上</span>
+        <span class="label">発電機接続端の始動要求<br>現構成・負荷時・暫定</span>
       </div>
       <div class="metric">
-        <span class="value">0.605-1.008 mW</span>
-        <span class="label">蓄電側回収見込み<br>効率30-50%仮定</span>
+        <span class="value">0.30 J / 10分</span>
+        <span class="label">発電機側の運用要求<br>回収効率30%の保守値</span>
       </div>
     </div>
 
@@ -471,7 +471,7 @@
             <tr><th>BLE・制御</th><td>MDBT50Q-U1MV2、採用</td></tr>
             <tr><th>温湿度</th><td>SHTC3、採用</td></tr>
             <tr><th>入力保護</th><td>逆接・過電圧保護を試作評価後に確定</td></tr>
-            <tr><th>成立条件</th><td>最低比較点相当の発電時間率25%以上を暫定条件</td></tr>
+            <tr><th>成立条件</th><td>必要平均0.50 mW。最低比較点2.016 mW相当の発電時間率25%以上</td></tr>
           </tbody>
         </table>
       </div>
@@ -497,7 +497,7 @@
       <div class="doc-meta">
         提出先：パンタレイ様<br>
         提出元：株式会社越後鐵工所<br>
-        Rev. 1.1
+        Rev. 1.2
       </div>
     </header>
 
@@ -528,11 +528,11 @@
     <div class="mode-grid">
       <div class="mode-block">
         <h3>通常運転</h3>
-        <p>起床後に蓄電電圧を確認し、十分な場合のみ温湿度を測定してAdvertisingを6回送信します。処理後は低消費電力待機へ戻ります。発電電力が不足しても、蓄電が残っている間はスーパーキャパシタが不足分を供給します。</p>
+        <p>起床後に蓄電電圧を確認し、十分な場合のみ温湿度を測定してAdvertisingを6回送信します。処理後は低消費電力待機へ戻ります。発電機側には0.30 J以上／10分を求め、不足時はスーパーキャパシタが補います。</p>
       </div>
       <div class="mode-block alt">
         <h3>1時間周期案</h3>
-        <p>平均消費は約76-79 uWの見込みで、通常運転は可能です。ただし完全放電から1時間以内の初回送信は保証せず、コールドスタート時間を試作で確認します。</p>
+        <p>平均消費は約76-79 uW、発電機側の要求は約0.95 J以上／時の見込みです。ただし完全放電から1時間以内の初回送信は保証せず、コールドスタート時間を試作で確認します。</p>
       </div>
     </div>
 
@@ -553,8 +553,8 @@
         </tr>
         <tr>
           <td><span class="status">要実測</span>起動条件</td>
-          <td>前段保護回路と0.47 F蓄電素子により、コールドスタートが遅れる可能性があります。</td>
-          <td>完全放電から入力を掃引し、始動電圧・電力・初回送信時間を測定します。</td>
+          <td>完全放電時は4.09 Vまでの蓄電だけで最低3.93 J必要です。実際の発電機入力は損失分だけ増えます。</td>
+          <td>完全放電から入力を掃引し、始動電圧・入力総エネルギー・初回送信時間を測定します。</td>
         </tr>
         <tr>
           <td><span class="status">要比較</span>回収効率</td>
