@@ -2,7 +2,7 @@
 
 ## 提出正本
 
-- [customer-proposal.pdf](customer-proposal.pdf): A4縦2ページの顧客説明用企画書
+- [customer-proposal.pdf](customer-proposal.pdf): 株式会社越後鐵工所からパンタレイ様へ提出するA4縦2ページの企画書
 
 ## 編集・再生成
 
