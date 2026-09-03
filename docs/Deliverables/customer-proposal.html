@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>小型風力発電 BLE 温湿度ノード 企画書</title>
+  <style>
+    :root {
+      --navy: #16345b;
+      --blue: #255ca8;
+      --green: #14765c;
+      --amber: #a45b08;
+      --red: #a83939;
+      --ink: #182230;
+      --muted: #556274;
+      --line: #c9d2dd;
+      --panel: #f3f6f9;
+      --blue-soft: #eaf2fc;
+      --green-soft: #e9f6f1;
+      --amber-soft: #fff6df;
+      --red-soft: #fceeee;
+    }
+
+    @page {
+      size: A4 portrait;
+      margin: 0;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+      color: var(--ink);
+      font-family: "Yu Gothic", "YuGothic", "Meiryo", sans-serif;
+      font-size: 10pt;
+      line-height: 1.5;
+      background: #dce2e8;
+    }
+
+    .page {
+      position: relative;
+      width: 210mm;
+      height: 297mm;
+      padding: 11mm 13mm 10mm;
+      margin: 0 auto 8mm;
+      overflow: hidden;
+      background: white;
+      page-break-after: always;
+    }
+
+    .page:last-child {
+      page-break-after: auto;
+    }
+
+    .document-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      padding-bottom: 3.2mm;
+      border-bottom: 1.2mm solid var(--navy);
+    }
+
+    .eyebrow {
+      margin: 0 0 1mm;
+      color: var(--blue);
+      font-size: 8pt;
+      font-weight: 700;
+    }
+
+    h1 {
+      margin: 0;
+      color: var(--navy);
+      font-size: 20pt;
+      line-height: 1.2;
+    }
+
+    .subtitle {
+      margin: 1.2mm 0 0;
+      color: var(--muted);
+      font-size: 9pt;
+    }
+
+    .doc-meta {
+      min-width: 38mm;
+      padding-top: 1mm;
+      color: var(--muted);
+      font-size: 7.5pt;
+      line-height: 1.55;
+      text-align: right;
+    }
+
+    .verdict {
+      display: grid;
+      grid-template-columns: 34mm 1fr;
+      align-items: center;
+      gap: 4mm;
+      margin: 4mm 0 3.5mm;
+      padding: 3mm 4mm;
+      border-left: 1.5mm solid var(--green);
+      background: var(--green-soft);
+    }
+
+    .verdict strong {
+      color: var(--green);
+      font-size: 12pt;
+    }
+
+    .verdict p {
+      margin: 0;
+      font-size: 9pt;
+    }
+
+    h2 {
+      margin: 4mm 0 2mm;
+      padding-bottom: 1mm;
+      color: var(--navy);
+      font-size: 12.5pt;
+      line-height: 1.25;
+      border-bottom: 0.35mm solid var(--line);
+    }
+
+    h3 {
+      margin: 0 0 1.4mm;
+      color: var(--navy);
+      font-size: 10pt;
+    }
+
+    p {
+      margin: 0;
+    }
+
+    .diagram-frame {
+      height: 105mm;
+      border: 0.35mm solid var(--line);
+      background: #f7f9fb;
+      overflow: hidden;
+    }
+
+    .diagram-frame img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
+    .caption {
+      margin-top: 1mm;
+      color: var(--muted);
+      font-size: 7.3pt;
+      text-align: right;
+    }
+
+    .metric-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 2mm;
+      margin: 2.5mm 0 3mm;
+    }
+
+    .metric {
+      min-height: 18mm;
+      padding: 2.2mm;
+      border-top: 0.8mm solid var(--blue);
+      background: var(--blue-soft);
+      text-align: center;
+    }
+
+    .metric:nth-child(2) {
+      border-color: var(--green);
+      background: var(--green-soft);
+    }
+
+    .metric:nth-child(3) {
+      border-color: var(--amber);
+      background: var(--amber-soft);
+    }
+
+    .metric:nth-child(4) {
+      border-color: var(--red);
+      background: var(--red-soft);
+    }
+
+    .metric .value {
+      display: block;
+      color: var(--navy);
+      font-size: 14pt;
+      font-weight: 700;
+      line-height: 1.15;
+    }
+
+    .metric .label {
+      display: block;
+      margin-top: 1mm;
+      color: var(--muted);
+      font-size: 7.3pt;
+      line-height: 1.25;
+    }
+
+    .columns {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5mm;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      table-layout: fixed;
+      font-size: 8pt;
+    }
+
+    th,
+    td {
+      padding: 1.35mm 1.7mm;
+      vertical-align: top;
+      border-bottom: 0.25mm solid var(--line);
+    }
+
+    th {
+      color: var(--navy);
+      background: var(--panel);
+      font-weight: 700;
+      text-align: left;
+    }
+
+    .spec-table th {
+      width: 25mm;
+    }
+
+    .scope-note {
+      margin-top: 2.5mm;
+      padding: 2.2mm 3mm;
+      border: 0.3mm solid var(--line);
+      font-size: 7.7pt;
+    }
+
+    .scope-note strong {
+      color: var(--navy);
+    }
+
+    .operation-flow {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 4mm;
+      margin: 3mm 0 4mm;
+      counter-reset: flow;
+    }
+
+    .flow-step {
+      position: relative;
+      min-height: 36mm;
+      padding: 4.5mm 2.5mm 2.5mm;
+      border: 0.35mm solid var(--line);
+      background: var(--panel);
+      counter-increment: flow;
+    }
+
+    .flow-step::before {
+      content: counter(flow);
+      position: absolute;
+      top: -3.2mm;
+      left: 2.5mm;
+      display: grid;
+      width: 6.5mm;
+      height: 6.5mm;
+      place-items: center;
+      color: white;
+      background: var(--blue);
+      border-radius: 50%;
+      font-size: 8pt;
+      font-weight: 700;
+    }
+
+    .flow-step:not(:last-child)::after {
+      content: ">";
+      position: absolute;
+      top: 11mm;
+      right: -3.3mm;
+      color: var(--muted);
+      font-size: 11pt;
+      font-weight: 700;
+    }
+
+    .flow-step strong {
+      display: block;
+      margin-bottom: 1.2mm;
+      color: var(--navy);
+      font-size: 9pt;
+    }
+
+    .flow-step span {
+      display: block;
+      color: var(--muted);
+      font-size: 7.7pt;
+      line-height: 1.35;
+    }
+
+    .mode-grid {
+      display: grid;
+      grid-template-columns: 1.05fr 0.95fr;
+      gap: 4mm;
+      margin-bottom: 3mm;
+    }
+
+    .mode-block {
+      padding: 3mm;
+      border-left: 1mm solid var(--blue);
+      background: var(--blue-soft);
+    }
+
+    .mode-block.alt {
+      border-color: var(--amber);
+      background: var(--amber-soft);
+    }
+
+    .mode-block p {
+      font-size: 8.6pt;
+    }
+
+    .risk-table th:nth-child(1) {
+      width: 32mm;
+    }
+
+    .risk-table th:nth-child(2) {
+      width: 63mm;
+    }
+
+    .risk-table td {
+      padding-top: 2mm;
+      padding-bottom: 2mm;
+      font-size: 8.2pt;
+      line-height: 1.4;
+    }
+
+    .status {
+      display: inline-block;
+      margin-right: 1mm;
+      padding: 0.2mm 1.2mm;
+      color: white;
+      background: var(--amber);
+      border-radius: 1mm;
+      font-size: 6.8pt;
+      font-weight: 700;
+    }
+
+    .next-step {
+      display: grid;
+      grid-template-columns: 28mm 1fr;
+      align-items: center;
+      gap: 4mm;
+      margin-top: 3.5mm;
+      padding: 4mm;
+      border: 0.4mm solid var(--green);
+      background: var(--green-soft);
+    }
+
+    .next-step strong {
+      color: var(--green);
+      font-size: 10pt;
+    }
+
+    .next-step p {
+      font-size: 8.5pt;
+    }
+
+    .sources {
+      margin-top: 3mm;
+      color: var(--muted);
+      font-size: 6.5pt;
+      line-height: 1.4;
+    }
+
+    .sources a {
+      color: var(--muted);
+      text-decoration: none;
+    }
+
+    .footer {
+      position: absolute;
+      right: 13mm;
+      bottom: 5mm;
+      left: 13mm;
+      display: flex;
+      justify-content: space-between;
+      padding-top: 1.5mm;
+      color: var(--muted);
+      font-size: 6.7pt;
+      border-top: 0.25mm solid var(--line);
+    }
+
+    @media print {
+      html,
+      body {
+        background: white;
+      }
+
+      .page {
+        margin: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <section class="page">
+    <header class="document-head">
+      <div>
+        <p class="eyebrow">企画・設計方針</p>
+        <h1>小型風力発電 BLE 温湿度ノード</h1>
+        <p class="subtitle">電源成立性・システム構成　試作前評価</p>
+      </div>
+      <div class="doc-meta">
+        2026年9月3日<br>
+        Rev. 1.0<br>
+        顧客説明用
+      </div>
+    </header>
+
+    <div class="verdict">
+      <strong>成立見込み</strong>
+      <p>風力発電を一度スーパーキャパシタへ蓄え、電力が確保できた時だけ温湿度を測定・送信します。現時点の設計計算では計測・BLE通信は成立見込みであり、試作評価で最終確認します。</p>
+    </div>
+
+    <h2>1. システム構成</h2>
+    <div class="diagram-frame">
+      <img src="assets/system-block-diagram.png" alt="小型風力発電BLE温湿度ノードのシステムブロック図">
+    </div>
+    <p class="caption">図1　発電・保護・蓄電から計測・BLE送信までの構成</p>
+
+    <h2>2. 計画仕様と電力成立性</h2>
+    <div class="metric-grid">
+      <div class="metric">
+        <span class="value">25 mA</span>
+        <span class="label">計測・送信ピーク<br>暫定設計値</span>
+      </div>
+      <div class="metric">
+        <span class="value">約0.10 mW</span>
+        <span class="label">10分周期の平均消費<br>受入上限0.15 mW</span>
+      </div>
+      <div class="metric">
+        <span class="value">2.016 mW</span>
+        <span class="label">顧客データの<br>電力収支最低比較点</span>
+      </div>
+      <div class="metric">
+        <span class="value">0.605-1.008 mW</span>
+        <span class="label">蓄電側回収見込み<br>効率30-50%仮定</span>
+      </div>
+    </div>
+
+    <div class="columns">
+      <div>
+        <h3>計画仕様</h3>
+        <table class="spec-table">
+          <tbody>
+            <tr><th>計測対象</th><td>温度・湿度・蓄電電圧</td></tr>
+            <tr><th>送信方式</th><td>BLE Advertising、1M PHY、0 dBm、6回</td></tr>
+            <tr><th>送信周期</th><td>基準10分。1時間周期も対応可能な見込み</td></tr>
+            <tr><th>ロジック</th><td>nRF52840 BLEモジュール、3.3 V動作</td></tr>
+            <tr><th>蓄電</th><td>5.4 V / 0.47 Fスーパーキャパシタ</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div>
+        <h3>主要構成</h3>
+        <table class="spec-table">
+          <tbody>
+            <tr><th>電源IC</th><td>BQ25570RGR、条件付き採用</td></tr>
+            <tr><th>BLE・制御</th><td>MDBT50Q-U1MV2、採用</td></tr>
+            <tr><th>温湿度</th><td>SHTC3、採用</td></tr>
+            <tr><th>入力保護</th><td>逆接・過電圧保護を試作評価後に確定</td></tr>
+            <tr><th>成立条件</th><td>最低比較点相当の発電時間率25%以上を暫定条件</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="scope-note">
+      <strong>責任分界：</strong> 回路・基板・センサノード側ファームウェアは当方範囲です。BLE受信以降のPCソフトウェア、ログ保存・解析は顧客範囲とし、Advertisingデータ形式を両者で確定します。
+    </div>
+
+    <footer class="footer">
+      <span>本資料の数値は試作前の設計計算値です。</span>
+      <span>1 / 2</span>
+    </footer>
+  </section>
+
+  <section class="page">
+    <header class="document-head">
+      <div>
+        <p class="eyebrow">動作・評価計画</p>
+        <h1>運用動作と試作評価リスク</h1>
+        <p class="subtitle">蓄電量に応じて動作を制限し、不安定な電圧での送信を避けます。</p>
+      </div>
+      <div class="doc-meta">
+        小型風力発電<br>
+        BLE温湿度ノード<br>
+        Rev. 1.0
+      </div>
+    </header>
+
+    <h2>3. 発電・蓄電電圧不足時の動作</h2>
+    <div class="operation-flow">
+      <div class="flow-step">
+        <strong>発電・蓄電</strong>
+        <span>発電電力をスーパーキャパシタへ蓄えます。</span>
+      </div>
+      <div class="flow-step">
+        <strong>4.09 Vで起動</strong>
+        <span>3.3 V電源を有効化し、MCUを起動します。</span>
+      </div>
+      <div class="flow-step">
+        <strong>4.00 V未満</strong>
+        <span>計測・送信・不揮発書込みを抑止します。</span>
+      </div>
+      <div class="flow-step">
+        <strong>3.58 Vで停止</strong>
+        <span>3.3 V電源をハードウェアで遮断します。</span>
+      </div>
+      <div class="flow-step">
+        <strong>再充電・再起動</strong>
+        <span>4.09 Vまで回復後、リセットから再開します。</span>
+      </div>
+    </div>
+
+    <div class="mode-grid">
+      <div class="mode-block">
+        <h3>通常運転</h3>
+        <p>起床後に蓄電電圧を確認し、十分な場合のみ温湿度を測定してAdvertisingを6回送信します。処理後は低消費電力待機へ戻ります。発電電力が不足しても、蓄電が残っている間はスーパーキャパシタが不足分を供給します。</p>
+      </div>
+      <div class="mode-block alt">
+        <h3>1時間周期案</h3>
+        <p>平均消費は約76-79 uWの見込みで、通常運転は可能です。ただし完全放電から1時間以内の初回送信は保証せず、コールドスタート時間を試作で確認します。</p>
+      </div>
+    </div>
+
+    <h2>4. 実施しないと確定できないリスク</h2>
+    <table class="risk-table">
+      <thead>
+        <tr>
+          <th>評価項目</th>
+          <th>現時点のリスク</th>
+          <th>試作での確認内容</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="status">要実測</span>発電特性</td>
+          <td>開放電圧、過渡電圧、風速ごとの最大電力点が未確定です。</td>
+          <td>同一風速・回転数でI-Vカーブと過渡波形を測定します。</td>
+        </tr>
+        <tr>
+          <td><span class="status">要実測</span>起動条件</td>
+          <td>前段保護回路と0.47 F蓄電素子により、コールドスタートが遅れる可能性があります。</td>
+          <td>完全放電から入力を掃引し、始動電圧・電力・初回送信時間を測定します。</td>
+        </tr>
+        <tr>
+          <td><span class="status">要比較</span>回収効率</td>
+          <td>30-50%は暫定仮定です。高電圧域ではBQ25570案の回収損失が増える可能性があります。</td>
+          <td>BQ25570案と高耐圧Buck案を同一入力で比較します。</td>
+        </tr>
+        <tr>
+          <td><span class="status">要実測</span>低電圧送信</td>
+          <td>低温・最大送信出力で3.3 Vが低下し、リセットする可能性があります。</td>
+          <td>蓄電電圧3.58 V付近で最大送信条件を評価します。</td>
+        </tr>
+        <tr>
+          <td><span class="status">要実測</span>蓄電・保護</td>
+          <td>キャパシタのリーク個体差と、満充電時の入力クランプ発熱が未確認です。</td>
+          <td>温度別リーク、無風継続時間、クランプ温度を測定します。</td>
+        </tr>
+        <tr>
+          <td><span class="status">要確認</span>設置条件</td>
+          <td>年間の風速分布、発電時間率、要求無風継続時間が未確定です。</td>
+          <td>設置条件を確認し、蓄電容量と送信周期を最終決定します。</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="next-step">
+      <strong>次の判断</strong>
+      <p>試作機で発電入力、コールドスタート、10分・1時間周期の消費電力、低温時送信、保護回路温度を測定し、電源方式と送信周期を確定します。</p>
+    </div>
+
+    <div class="sources">
+      <strong>主な一次資料：</strong>
+      <a href="https://www.ti.com/lit/ds/symlink/bq25570.pdf">TI BQ25570 Data Sheet</a> /
+      <a href="https://docs-be.nordicsemi.com/bundle/nRF52840_PS_v1.9/raw/resource/enus/nRF52840_PS_v1.9.pdf">Nordic nRF52840 Product Specification</a> /
+      <a href="https://sensirion.com/media/documents/643F9C8E/63A5A436/Datasheet_SHTC3.pdf">Sensirion SHTC3 Data Sheet</a> /
+      <a href="https://www.eaton.com/content/dam/eaton/products/electronic-components/resources/data-sheet/eaton-phv-supercapacitors-cylindrical-pack-data-sheet.pdf">Eaton PHV Data Sheet</a>
+    </div>
+
+    <footer class="footer">
+      <span>暫定値は顧客条件の確認と試作評価後に確定します。</span>
+      <span>2 / 2</span>
+    </footer>
+  </section>
+</body>
+</html>
