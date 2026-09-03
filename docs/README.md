@@ -10,6 +10,8 @@
 - [Setup/NCS_SETUP.md](Setup/NCS_SETUP.md): MDBT50Q-U1MV2 / nRF52840 の開発環境と書込み手順
 - [Firmware/FIRMWARE_PLAN.md](Firmware/FIRMWARE_PLAN.md): 状態遷移、Advertising 仕様、低消費電力実装方針
 - [Codex/対話記録.md](Codex/対話記録.md): 主要な決定、保留事項、次の確認
+- [Deliverables/CUSTOMER_A4_FACT_PACK.md](Deliverables/CUSTOMER_A4_FACT_PACK.md): 顧客向けA4を生成するための自己完結型事実パック
+- [Deliverables/CUSTOMER_A4_GENERATION_PROMPT.md](Deliverables/CUSTOMER_A4_GENERATION_PROMPT.md): 別GPTへ渡すA4資料生成プロンプト
 - [environment.md](environment.md): 開発環境、推奨ツール、初期セットアップ
 - [design-handoff-summary.md](design-handoff-summary.md): 添付設計引継ぎの要約と設計前提
 - [roadmap.md](roadmap.md): 次に進める作業、ブロッカー、検収候補
